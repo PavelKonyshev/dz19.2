@@ -46,9 +46,6 @@ class Product(models.Model):
     updated_at = models.DateField(
         verbose_name="Дата изменения",
     )
-    manufactured_at = models.DateField(
-        verbose_name="Дата изготовления",
-    )
 
     def __str__(self):
         # Строковое отображение объекта
