@@ -30,9 +30,7 @@ class Product(models.Model):
         verbose_name="Наименование",
         help_text="Введите наименование продукта",
     )
-    description = models.TextField(
-        verbose_name="Описание", help_text="Введите описание продукта", **NULLABLE
-    )
+    description = models.TextField(verbose_name="Описание", **NULLABLE)
     image = models.ImageField(
         upload_to="products/", verbose_name="Фото продукта", **NULLABLE
     )
@@ -40,8 +38,9 @@ class Product(models.Model):
         Category,
         on_delete=models.SET_NULL,
         verbose_name="Категория",
-        related_name="Products",
-        **NULLABLE,
+        related_name="products",
+        null=True,
+        blank=True
     )
     price = models.IntegerField(verbose_name="Цена продукта", **NULLABLE)
     created_at = models.DateField(verbose_name="Дата создания", **NULLABLE)
@@ -49,9 +48,9 @@ class Product(models.Model):
 
     def __str__(self):
         # Строковое отображение объекта
-        return f"{self.name} {self.category} {self.description} {self.price}"
+        return f'{self.name} {self.description} {self.category} {self.price}'
 
     class Meta:
         verbose_name = "Продукт"  # Настройка для наименования одного объекта
         verbose_name_plural = "Продукты"  # Настройка для наименования набора объектов
-        ordering = ["name", "price"]
+        ordering = ["name", "category"]
