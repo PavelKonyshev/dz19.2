@@ -12,7 +12,7 @@ class Command(BaseCommand):
         Product.objects.all().delete()
 
         # Загружаем данные из JSON-файла
-        with open("catalog/fixtures/catalog_data.json", "r", encoding="utf-8") as file:
+        with open("catalog/fixtures.catalog_data.json", "r", encoding="utf-8") as file:
             data = json.load(file)
 
         # Создаем категории и продукты

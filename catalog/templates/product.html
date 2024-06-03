@@ -8,6 +8,7 @@
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
                     <h4 class="my-0 font-weight-normal"> {{ products.category }}</h4>
+                    <h4 class="my-0 font-weight-normal"> {{ products.description | truncatechars_html:100 }}</h4>
                 </div>
                 <img src="{{ products.image | media_filters }}">
                 <div class="card-body">
