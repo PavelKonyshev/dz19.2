@@ -16,7 +16,7 @@ class Article(models.Model):
         verbose_name="Содержимое статьи", help_text="Введите содержимое статьи"
     )
     preview = models.ImageField(
-        upload_to="blog/photo",
+        upload_to="blog/",
         verbose_name="Превью",
         help_text="Загрузите превью статьи",
         **NULLABLE
