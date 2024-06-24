@@ -21,7 +21,7 @@ class ArticleCreateView(CreateView):
 
 class ArticleUpdateView(UpdateView):
     model = Article
-    fields = ('title', 'content', 'preview', 'created_at', 'published', 'number_views',)
+    fields = ('title', 'content', 'preview', 'created_at', 'published',)
     #success_url = reverse_lazy('blog:blog_list')
 
     def form_valid(self, form):
