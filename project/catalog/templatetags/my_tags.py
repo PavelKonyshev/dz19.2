@@ -5,4 +5,4 @@ register = template.Library()
 def media_filters(path):
     if path:
         return f'/media/{path}'
-    return '/media/no_product.jpg'
+    return '#'

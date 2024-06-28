@@ -47,6 +47,6 @@ class Article(models.Model):
         verbose_name_plural = "Ститьи"
 
 
-from django.db import models
 
-# Create your models here.
+
+

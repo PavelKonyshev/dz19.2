@@ -5,30 +5,28 @@ NULLABLE = {"blank": True, "null": True}
 
 # Создание класса Категория
 class Category(models.Model):
-    objects = None
     name = models.CharField(
-        max_length=255,
-        verbose_name="Название категории",
+        max_length=100,
+        verbose_name="Название категории", **NULLABLE
     )
     description = models.TextField(verbose_name="Описание категории", **NULLABLE)
 
-    def __str__(self):
-        return self.name
+
 
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
-        ordering = ["name"]
+        ordering = ["name",]
 
-
+    def __str__(self):
+        return self.name
 # Создание класса продукт
 class Product(models.Model):
-    objects = None
 
     name = models.CharField(
         max_length=100,
         verbose_name="Наименование",
-        help_text="Введите наименование продукта",
+        help_text="Введите наименование продукта", **NULLABLE
     )
     description = models.TextField(verbose_name="Описание", **NULLABLE)
     image = models.ImageField(
@@ -38,19 +36,34 @@ class Product(models.Model):
         Category,
         on_delete=models.SET_NULL,
         verbose_name="Категория",
-        related_name="products",
-        null=True,
-        blank=True
+        related_name="products", **NULLABLE
     )
     price = models.IntegerField(verbose_name="Цена продукта", **NULLABLE)
     created_at = models.DateField(verbose_name="Дата создания", **NULLABLE)
     updated_at = models.DateField(verbose_name="Дата изменения", **NULLABLE)
+    in_stock = models.BooleanField(default=True)
 
     def __str__(self):
-        # Строковое отображение объекта
-        return f'{self.name} {self.description} {self.category} {self.price}'
+        return f"{self.name} {self.price}"
 
     class Meta:
-        verbose_name = "Продукт"  # Настройка для наименования одного объекта
-        verbose_name_plural = "Продукты"  # Настройка для наименования набора объектов
-        ordering = ["name", "category"]
+        verbose_name = "Продукт"
+        verbose_name_plural = "Продукты"
+        ordering = ["name", "price", "created_at", "updated_at"]
+
+
+
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='продукт', related_name='prod')
+    version_number = models.IntegerField(verbose_name="номер версии")
+    name = models.CharField(verbose_name="название версии")
+    is_active = models.BooleanField(verbose_name="активная версия")
+
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'
+
+    def __str__(self):
+        return self.name
