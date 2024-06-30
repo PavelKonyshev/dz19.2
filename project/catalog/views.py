@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -26,14 +27,17 @@ class ProductListView(ListView):
 
         context_data['object_list'] = list_product
         return context_data
+
+
 class ProductDetailView(DetailView):
     model = Product
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.number_views += 1
+        self.object.save()
+        return self.object
 
-
-
-
-
-class ProductCreateView(CreateView):
+class ProductCreateView(CreateView, LoginRequiredMixin):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
@@ -58,10 +62,11 @@ class ProductCreateView(CreateView):
 
         return super().form_valid(form)
 
-class ProductUpdateView(UpdateView):
+
+class ProductUpdateView(UpdateView, LoginRequiredMixin):
     model = Product
     form_class = ProductForm
-    success_url = reverse_lazy('catalog:product')
+    success_url = reverse_lazy('catalog:product_list')
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -81,9 +86,12 @@ class ProductUpdateView(UpdateView):
 
         return super().form_valid(form)
 
-class ProductDeleteView(DeleteView):
+
+class ProductDeleteView(DeleteView, LoginRequiredMixin):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
+
+
 def toggle_in_stock(request, pk):
     product_item = get_object_or_404(Product, pk=pk)
     if product_item.in_stock:
@@ -91,7 +99,7 @@ def toggle_in_stock(request, pk):
     else:
         product_item.in_stock = True
     product_item.save()
-    return redirect(reverse('catalog:product'))
+    return redirect(reverse('catalog:product_list'))
+
 class ContactPageView(TemplateView):
     template_name = "catalog/contacts.html"
-

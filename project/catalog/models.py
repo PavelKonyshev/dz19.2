@@ -42,6 +42,11 @@ class Product(models.Model):
     created_at = models.DateField(verbose_name="Дата создания", **NULLABLE)
     updated_at = models.DateField(verbose_name="Дата изменения", **NULLABLE)
     in_stock = models.BooleanField(default=True)
+    number_views = models.PositiveIntegerField(
+        verbose_name="Количество просмотров",
+        help_text="Укажите количество просмотров",
+        default=0,
+    )
 
     def __str__(self):
         return f"{self.name} {self.price}"
